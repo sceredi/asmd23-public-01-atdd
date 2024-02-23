@@ -32,6 +32,14 @@ public class Calculator {
         numbers.remove(1);
     }
 
+    public void multiply() {
+        if (!this.isOperationPossible()) {
+            throw new IllegalStateException();
+        }
+        numbers.set(0, numbers.get(0) * numbers.get(1));
+        numbers.remove(1);
+    }
+
     public int getResult(){
         if (numbers.size() != 1){
             throw new IllegalStateException();

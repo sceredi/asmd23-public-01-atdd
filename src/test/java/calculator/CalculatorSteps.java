@@ -18,20 +18,25 @@ public class CalculatorSteps {
         }
     }
 
-
-    @And("I press the subtraction operator")
-    public void iPressTheSubtractionOperator() {
-        this.calculator.subtract();
-    }
-
     @When("I enter {int} and {int}")
     public void iEnterAnd(Integer int1, Integer int2) {
         this.calculator.enter(int1);
         this.calculator.enter(int2);
     }
 
+    @And("I press the subtraction operator")
+    public void iPressTheSubtractionOperator() {
+        this.calculator.subtract();
+    }
+
+
     @And("I press the addition operator")
     public void iPressTheAdditionOperator() {
         this.calculator.add();
+    }
+
+    @And("I press the multiplication operator")
+    public void iPressTheMultiplicationOperator() {
+        this.calculator.multiply();
     }
 }
