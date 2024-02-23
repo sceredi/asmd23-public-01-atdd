@@ -5,15 +5,17 @@ Feature:  Adding numbers with a Calculator
 
   Background: Start with a Calculator
     Given I have a Calculator
-
   Scenario:  Add two positive numbers
-    When I add 1 and 1
-    Then the sum should be 2
+    When I enter 1 and 1
+    And I press the addition operator
+    Then the result should be 2
 
   Scenario:  Add a positive and negative number
-    When I add 1 and -1
-    Then the sum should be 0
+    When I enter 1 and -1
+    And I press the addition operator
+    Then the result should be 0
 
   Scenario:  Add two negative numbers
-    When I add -1 and -1
-    Then the sum should be -2
+    When I enter -1 and -1
+    And I press the addition operator
+    Then the result should be -2

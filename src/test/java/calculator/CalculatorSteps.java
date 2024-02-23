@@ -11,17 +11,27 @@ public class CalculatorSteps {
         this.calculator = new Calculator();
     }
 
-    @When("I add {int} and {int}")
-    public void iAddAnd(int arg0, int arg1) {
-        this.calculator.enter(arg0);
-        this.calculator.enter(arg1);
-    }
-
-    @Then("the sum should be {int}")
-    public void theSumShouldBe(int arg0) {
-        this.calculator.add();
-        if (arg0 != this.calculator.getResult()) { // or using Junit's asserts
+    @Then("the result should be {int}")
+    public void theResultShouldBe(int arg0) {
+        if (arg0 != this.calculator.getResult()) {
             throw new IllegalStateException();
         }
+    }
+
+
+    @And("I press the subtraction operator")
+    public void iPressTheSubtractionOperator() {
+        this.calculator.subtract();
+    }
+
+    @When("I enter {int} and {int}")
+    public void iEnterAnd(Integer int1, Integer int2) {
+        this.calculator.enter(int1);
+        this.calculator.enter(int2);
+    }
+
+    @And("I press the addition operator")
+    public void iPressTheAdditionOperator() {
+        this.calculator.add();
     }
 }
