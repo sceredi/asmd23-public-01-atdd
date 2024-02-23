@@ -3,7 +3,6 @@ package calculator;
 import io.cucumber.java.en.*;
 
 public class CalculatorSteps {
-    private int res = 0;
     private Calculator calculator;
 
     @Given("I have a Calculator")
