@@ -12,8 +12,12 @@ public class Calculator {
         }
     }
 
+    private boolean isOperationPossible() {
+        return numbers.size() == 2;
+    }
+
     public void add(){
-        if (numbers.size() != 2){
+        if (!this.isOperationPossible()){
             throw new IllegalStateException();
         }
         numbers.set(0, numbers.get(0) + numbers.get(1));
@@ -21,7 +25,7 @@ public class Calculator {
     }
 
     public void subtract() {
-        if (numbers.size() != 2) {
+        if (!this.isOperationPossible()) {
             throw new IllegalStateException();
         }
         numbers.set(0, numbers.get(0) - numbers.get(1));
