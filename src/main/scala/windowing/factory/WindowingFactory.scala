@@ -9,6 +9,8 @@ trait WindowingFactory:
 
   def summing(n: Int): Windowing[Int, Int]
 
+  def last[A](n: Int): Windowing[A, List[A]]
+
 object WindowingFactory:
   def apply(): WindowingFactory = WindowingFactoryImpl()
 
@@ -25,6 +27,11 @@ object WindowingFactory:
 
     override def summing(n: Int): Windowing[Int, Int] = Windowing {
       case l if l.length >= 4 => Some(l.zipWithIndex.filter((_, idx) => idx < 4).map(_._1).sum)
+      case _ => None
+    }
+
+    override def last[A](n: Int): Windowing[A, List[A]] = Windowing {
+      case l if l.length >= n => Some(l.zipWithIndex.filter(_._2 < n).map(_._1).toList.reverse)
       case _ => None
     }
 

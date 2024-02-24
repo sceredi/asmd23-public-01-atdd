@@ -21,8 +21,8 @@ Feature:  Using a WindowingFactory
     Then it should output the sum of the last four processed values
 
   Scenario: A Last N Windowing should return a list of the last N processed inputs, and return nothing the first N-1 times
-    When I get a Last 4 Windowing
-    Then it should output a list of the last 4 processed values
+    When I get a Last four Windowing
+    Then it should output a list of the last four processed values
 
 
   Scenario: A Last Whose Sum Is At Least N Windowing should return the list of the last processed element whose sum is at least N

@@ -62,3 +62,28 @@ class WindowingFactorySteps extends ScalaDsl with EN:
       sumWindowing.process(20) match
         case Some(1122) => // Right path
         case _ => throw IllegalStateException()
+
+  var last4Windowing: Windowing[Int, List[Int]] = null
+  When("""I get a Last four Windowing"""):
+    () => last4Windowing = WindowingFactory().last(4)
+
+  Then("""it should output a list of the last four processed values"""):
+    () =>
+      last4Windowing.process(1) match
+        case None => // Right path
+        case _ => throw IllegalStateException()
+      last4Windowing.process(10) match
+        case None => // Right path
+        case _ => throw IllegalStateException()
+      last4Windowing.process(100) match
+        case None => //Right path
+        case _ => throw IllegalStateException()
+      last4Windowing.process(1000) match
+        case Some(List(1, 10, 100, 1000)) => // Right path
+        case _ => throw IllegalStateException()
+      last4Windowing.process(2) match
+        case Some(List(10, 100, 1000, 2)) => // Right path
+        case _ => throw IllegalStateException()
+      last4Windowing.process(20) match
+        case Some(List(100, 1000, 2, 20)) => // Right path
+        case _ => throw IllegalStateException()
