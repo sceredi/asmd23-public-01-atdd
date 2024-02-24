@@ -27,14 +27,14 @@ class WindowingFactorySteps extends ScalaDsl with EN:
   Then("""it should output a tuple with the last two processed values"""):
     () =>
       pairingWindowing.process(1) match
-        case None => ;
+        case None => // Right path
         case _ => throw IllegalStateException()
       pairingWindowing.process(3) match
-        case Some(1, 3) => ;
+        case Some(1, 3) => // Right path
         case _ => throw IllegalStateException()
       pairingWindowing.process(2) match
-        case Some(3, 2) => ;
+        case Some(3, 2) => // Right path
         case _ => throw IllegalStateException()
       pairingWindowing.process(1) match
-        case Some(2, 1) => ;
+        case Some(2, 1) => // Right path
         case _ => throw IllegalStateException()
