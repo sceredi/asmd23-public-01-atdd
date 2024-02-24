@@ -19,7 +19,6 @@ class WindowingFactorySteps extends ScalaDsl with EN:
 
 
   var pairingWindowing: Windowing[Int, (Int, Int)] = null
-  var pairingRes: Option[(Int, Int)] = Option.empty
 
   When("""I get a Pairing Windowing"""):
     () => pairingWindowing = WindowingFactory().pairing
@@ -37,4 +36,29 @@ class WindowingFactorySteps extends ScalaDsl with EN:
         case _ => throw IllegalStateException()
       pairingWindowing.process(1) match
         case Some(2, 1) => // Right path
+        case _ => throw IllegalStateException()
+
+  var sumWindowing: Windowing[Int, Int] = null
+  When("""I get a Sum Last four Windowing"""):
+    () => sumWindowing = WindowingFactory().summing(4)
+
+  Then("""it should output the sum of the last four processed values"""):
+    () =>
+      sumWindowing.process(1) match
+        case None => // Right path
+        case _ => throw IllegalStateException()
+      sumWindowing.process(10) match
+        case None => // Right path
+        case _ => throw IllegalStateException()
+      sumWindowing.process(100) match
+        case None => //Right path
+        case _ => throw IllegalStateException()
+      sumWindowing.process(1000) match
+        case Some(1111) => // Right path
+        case _ => throw IllegalStateException()
+      sumWindowing.process(2) match
+        case Some(1112) => // Right path
+        case _ => throw IllegalStateException()
+      sumWindowing.process(20) match
+        case Some(1122) => // Right path
         case _ => throw IllegalStateException()
