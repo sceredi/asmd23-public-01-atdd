@@ -11,6 +11,8 @@ trait WindowingFactory:
 
   def last[A](n: Int): Windowing[A, List[A]]
 
+  def sumAtLeast(n: Int): Windowing[Int, List[Int]]
+
 object WindowingFactory:
   def apply(): WindowingFactory = WindowingFactoryImpl()
 
@@ -34,5 +36,15 @@ object WindowingFactory:
       case l if l.length >= n => Some(l.zipWithIndex.filter(_._2 < n).map(_._1).toList.reverse)
       case _ => None
     }
+
+    override def sumAtLeast(n: Int): Windowing[Int, List[Int]] = Windowing {
+      case l if l.sum < n => None
+      case l => Some(sumTo(l.toList, n).reverse)
+    }
+
+    private def sumTo(list: List[Int], n: Int): List[Int] = list match
+      case head :: tail if head >= n => List(head)
+      case head :: tail => head :: sumTo(tail, n - head)
+      case _ => List.empty
 
 

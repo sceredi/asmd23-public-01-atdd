@@ -87,3 +87,37 @@ class WindowingFactorySteps extends ScalaDsl with EN:
       last4Windowing.process(20) match
         case Some(List(100, 1000, 2, 20)) => // Right path
         case _ => throw IllegalStateException()
+
+  var sumAtLeastWindowing: Windowing[Int, List[Int]] = null
+  When("""I get a Last Whose Sum Is At Least ten Windowing"""):
+    () => sumAtLeastWindowing = WindowingFactory().sumAtLeast(10)
+
+  Then("""it should return nothing as long as the sum isn't ten"""):
+    () =>
+      sumAtLeastWindowing.process(5) match
+        case None => // Right path
+        case _ => throw IllegalStateException()
+      sumAtLeastWindowing.process(3) match
+        case None => // Right path
+        case _ => throw IllegalStateException()
+      sumAtLeastWindowing.process(1) match
+        case None => // Right path
+        case _ => throw IllegalStateException()
+
+  And("""after the total is > ten, it should return the list of number whose sum is greater than ten"""):
+    () =>
+      sumAtLeastWindowing.process(1) match
+        case Some(List(5, 3, 1, 1)) => // Right path
+        case _ => throw IllegalStateException()
+      sumAtLeastWindowing.process(2) match
+        case Some(List(5, 3, 1, 1, 2)) => // Right path
+        case _ => throw IllegalStateException()
+      sumAtLeastWindowing.process(4) match
+        case Some(List(3, 1, 1, 2, 4)) => // Right path
+        case _ => throw IllegalStateException()
+      sumAtLeastWindowing.process(8) match
+        case Some(List(4, 8)) => // Right path
+        case _ => throw IllegalStateException()
+      sumAtLeastWindowing.process(20) match
+        case Some(List(20)) => // Right path
+        case _ => throw IllegalStateException()
