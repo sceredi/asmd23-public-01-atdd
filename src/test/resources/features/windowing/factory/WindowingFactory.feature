@@ -25,7 +25,7 @@ Feature:  Using a WindowingFactory
     Then it should output a list of the last 4 processed values
 
 
-  Scenario Outline: A Last Whose Sum Is At Least N Windowing should return the list of the last processed element whose sum is at least N
+  Scenario: A Last Whose Sum Is At Least N Windowing should return the list of the last processed element whose sum is at least N
     When I get a Last Whose Sum Is At Least 10 Windowing
     Then it should return nothing as long as the sum isn't 10
     And after the total is > 10, it should return the list of number whose sum is greater than 10
