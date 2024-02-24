@@ -1,7 +1,6 @@
 package windowing.factory
 
-trait Windowing[A, B]:
-  def process(value: A): Option[B]
+import windowing.Windowing
 
 trait WindowingFactory:
   def trivial[A, B]: Windowing[A, B]
