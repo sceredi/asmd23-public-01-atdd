@@ -1,6 +1,6 @@
 package windowing.factory
 
-import io.cucumber.scala.{EN, PendingException, ScalaDsl}
+import io.cucumber.scala.{EN, ScalaDsl}
 import windowing.Windowing
 
 
@@ -25,18 +25,13 @@ class WindowingFactorySteps extends ScalaDsl with EN:
 
   Then("""it should output a tuple with the last two processed values"""):
     () =>
-      pairingWindowing.process(1) match
-        case None => // Right path
-        case _ => throw IllegalStateException()
-      pairingWindowing.process(3) match
-        case Some(1, 3) => // Right path
-        case _ => throw IllegalStateException()
-      pairingWindowing.process(2) match
-        case Some(3, 2) => // Right path
-        case _ => throw IllegalStateException()
-      pairingWindowing.process(1) match
-        case Some(2, 1) => // Right path
-        case _ => throw IllegalStateException()
+      val testCases = List(
+        (1, None),
+        (3, Some(1, 3)),
+        (2, Some(3, 2)),
+        (1, Some(2, 1)),
+      )
+      testCases.foreach((value, expectedRes) => assert(pairingWindowing.process(value) == expectedRes))
 
   var sumWindowing: Windowing[Int, Int] = null
   When("""I get a Sum Last four Windowing"""):
@@ -44,24 +39,16 @@ class WindowingFactorySteps extends ScalaDsl with EN:
 
   Then("""it should output the sum of the last four processed values"""):
     () =>
-      sumWindowing.process(1) match
-        case None => // Right path
-        case _ => throw IllegalStateException()
-      sumWindowing.process(10) match
-        case None => // Right path
-        case _ => throw IllegalStateException()
-      sumWindowing.process(100) match
-        case None => //Right path
-        case _ => throw IllegalStateException()
-      sumWindowing.process(1000) match
-        case Some(1111) => // Right path
-        case _ => throw IllegalStateException()
-      sumWindowing.process(2) match
-        case Some(1112) => // Right path
-        case _ => throw IllegalStateException()
-      sumWindowing.process(20) match
-        case Some(1122) => // Right path
-        case _ => throw IllegalStateException()
+      val testCases = List(
+        (1, None),
+        (10, None),
+        (100, None),
+        (1000, Some(1111)),
+        (2, Some(1112)),
+        (20, Some(1122)),
+      )
+      testCases.foreach((value, expectedRes) => assert(sumWindowing.process(value) == expectedRes))
+
 
   var last4Windowing: Windowing[Int, List[Int]] = null
   When("""I get a Last four Windowing"""):
@@ -69,24 +56,15 @@ class WindowingFactorySteps extends ScalaDsl with EN:
 
   Then("""it should output a list of the last four processed values"""):
     () =>
-      last4Windowing.process(1) match
-        case None => // Right path
-        case _ => throw IllegalStateException()
-      last4Windowing.process(10) match
-        case None => // Right path
-        case _ => throw IllegalStateException()
-      last4Windowing.process(100) match
-        case None => //Right path
-        case _ => throw IllegalStateException()
-      last4Windowing.process(1000) match
-        case Some(List(1, 10, 100, 1000)) => // Right path
-        case _ => throw IllegalStateException()
-      last4Windowing.process(2) match
-        case Some(List(10, 100, 1000, 2)) => // Right path
-        case _ => throw IllegalStateException()
-      last4Windowing.process(20) match
-        case Some(List(100, 1000, 2, 20)) => // Right path
-        case _ => throw IllegalStateException()
+      val testCases = List(
+        (1, None),
+        (10, None),
+        (100, None),
+        (1000, Some(List(1, 10, 100, 1000))),
+        (2, Some(List(10, 100, 1000, 2))),
+        (20, Some(List(100, 1000, 2, 20))),
+      )
+      testCases.foreach((value, expectedRes) => assert(last4Windowing.process(value) == expectedRes))
 
   var sumAtLeastWindowing: Windowing[Int, List[Int]] = null
   When("""I get a Last Whose Sum Is At Least ten Windowing"""):
@@ -94,30 +72,20 @@ class WindowingFactorySteps extends ScalaDsl with EN:
 
   Then("""it should return nothing as long as the sum isn't ten"""):
     () =>
-      sumAtLeastWindowing.process(5) match
-        case None => // Right path
-        case _ => throw IllegalStateException()
-      sumAtLeastWindowing.process(3) match
-        case None => // Right path
-        case _ => throw IllegalStateException()
-      sumAtLeastWindowing.process(1) match
-        case None => // Right path
-        case _ => throw IllegalStateException()
+      val testCases = List(
+        (5, None),
+        (3, None),
+        (1, None),
+      )
+      testCases.foreach((value, expectedRes) => assert(sumAtLeastWindowing.process(value) == expectedRes))
 
   And("""after the total is > ten, it should return the list of number whose sum is greater than ten"""):
     () =>
-      sumAtLeastWindowing.process(1) match
-        case Some(List(5, 3, 1, 1)) => // Right path
-        case _ => throw IllegalStateException()
-      sumAtLeastWindowing.process(2) match
-        case Some(List(5, 3, 1, 1, 2)) => // Right path
-        case _ => throw IllegalStateException()
-      sumAtLeastWindowing.process(4) match
-        case Some(List(3, 1, 1, 2, 4)) => // Right path
-        case _ => throw IllegalStateException()
-      sumAtLeastWindowing.process(8) match
-        case Some(List(4, 8)) => // Right path
-        case _ => throw IllegalStateException()
-      sumAtLeastWindowing.process(20) match
-        case Some(List(20)) => // Right path
-        case _ => throw IllegalStateException()
+      val testCases = List(
+        (1, Some(List(5, 3, 1, 1))),
+        (2, Some(List(5, 3, 1, 1, 2))),
+        (4, Some(List(3, 1, 1, 2, 4))),
+        (8, Some(List(4, 8))),
+        (20, Some(List(20))),
+      )
+      testCases.foreach((value, expectedRes) => assert(sumAtLeastWindowing.process(value) == expectedRes))

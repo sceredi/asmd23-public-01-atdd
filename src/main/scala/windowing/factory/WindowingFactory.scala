@@ -18,12 +18,12 @@ object WindowingFactory:
 
   private class WindowingFactoryImpl extends WindowingFactory:
     override def trivial[A]: Windowing[A, A] = Windowing {
-      case head :: tail => Some(head)
+      case head :: _ => Some(head)
       case _ => None
     }
 
     override def pairing[A]: Windowing[A, (A, A)] = Windowing {
-      case first :: second :: tail => Some(second, first)
+      case first :: second :: _ => Some(second, first)
       case _ => None
     }
 
@@ -43,7 +43,7 @@ object WindowingFactory:
     }
 
     private def sumTo(list: List[Int], n: Int): List[Int] = list match
-      case head :: tail if head >= n => List(head)
+      case head :: _ if head >= n => List(head)
       case head :: tail => head :: sumTo(tail, n - head)
       case _ => List.empty
 
